@@ -12,7 +12,7 @@
       "matchDepNames": ["cashu-ts"],
       "groupName": "cashu-ts-update",
       "automerge": true,
-      "recreateClosed": true,
+      "recreateWhen": "always",
       "automergeType": "pr"
     }
   ],
