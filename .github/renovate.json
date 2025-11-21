@@ -1,0 +1,20 @@
+{
+  "extends": [
+    "config:base"
+  ],
+  "gitSubmodules": {
+    "enabled": true,
+    "fileMatch": [".gitmodules"]
+  },
+  "postUpdateOptions": ["npmDedupe"],
+  "schedule": ["at any time"],
+  "packageRules": [
+    {
+      "matchPackageNames": ["@cashu/cashu-ts"],
+      "matchPaths": ["package.json"],
+      "groupName": "cashu-ts",
+      "automerge": true
+    }
+  ],
+  "timezone": "UTC"
+}
