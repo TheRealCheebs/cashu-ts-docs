@@ -1,17 +1,12 @@
 {
-  "extends": [
-    "config:base"
-  ],
-  "gitSubmodules": {
-    "enabled": true,
-    "fileMatch": [".gitmodules"]
-  },
+  "extends": ["config:recommended"],
+  "git-submodules": {"enabled": true, "managerFilePatterns": ["/.gitmodules/"]},
   "postUpdateOptions": ["npmDedupe"],
   "schedule": ["at any time"],
   "packageRules": [
     {
       "matchPackageNames": ["@cashu/cashu-ts"],
-      "matchPaths": ["package.json"],
+      "matchFileNames": ["package.json"],
       "groupName": "cashu-ts",
       "automerge": true
     }
