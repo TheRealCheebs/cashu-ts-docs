@@ -3,6 +3,7 @@
   "baseBranches": ["main"],
   "automerge": true,
   "automergeType": "pr",
+  "branchPrefixOld": "renovate-",
   "extends": ["config:recommended"],
   "enabledManagers": ["git-submodules"],
   "git-submodules": {
