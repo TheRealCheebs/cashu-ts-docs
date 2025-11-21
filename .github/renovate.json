@@ -1,5 +1,6 @@
 {
   "extends": ["config:recommended"],
+  "enabledManagers": ["git-submodules", "npm"],
   "git-submodules": {"enabled": true, "managerFilePatterns": ["/.gitmodules/"]},
   "postUpdateOptions": ["npmDedupe"],
   "schedule": ["at any time"],
@@ -8,8 +9,17 @@
       "matchPackageNames": ["@cashu/cashu-ts"],
       "matchFileNames": ["package.json"],
       "groupName": "cashu-ts",
+      "postUpgradeTasks": {
+          "commands": ["npm install --package-lock-only"],
+          "fileFilters": ["package-lock.json"]
+      },
+      "automerge": true
+    },
+    {
+      "matchDepTypes": ["git-submodules"],
       "automerge": true
     }
   ],
-  "timezone": "UTC"
+  "timezone": "UTC",
+  "platformAutomerge": true
 }
