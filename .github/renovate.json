@@ -1,15 +1,11 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "baseBranches": ["main"],
+  "baseBranchPatterns": ["main"],
   "automerge": true,
   "automergeType": "pr",
-  "branchPrefixOld": "renovate-",
   "extends": ["config:recommended"],
   "enabledManagers": ["git-submodules"],
-  "git-submodules": {
-    "enabled": true,
-    "managerFilePatterns": [".gitmodules"]
-  },
+  "git-submodules": {"enabled": true, "managerFilePatterns": [".gitmodules"]},
   "schedule": ["at any time"],
   "packageRules": [
     {
