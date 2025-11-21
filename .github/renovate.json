@@ -1,23 +1,34 @@
 {
   "extends": ["config:recommended"],
   "enabledManagers": ["git-submodules", "npm"],
-  "git-submodules": {"enabled": true, "managerFilePatterns": ["/.gitmodules/"]},
+  "git-submodules": {
+    "enabled": true,
+    "managerFilePatterns": [".gitmodules"]
+  },
   "postUpdateOptions": ["npmDedupe"],
   "schedule": ["at any time"],
   "packageRules": [
     {
       "matchPackageNames": ["@cashu/cashu-ts"],
       "matchFileNames": ["package.json"],
-      "groupName": "cashu-ts",
+      "groupName": "cashu-ts-update",
       "postUpgradeTasks": {
-          "commands": ["npm install --package-lock-only"],
-          "fileFilters": ["package-lock.json"]
+        "commands": ["npm install --package-lock-only @cashu/cashu-ts"],
+        "fileFilters": ["package-lock.json"]
       },
-      "automerge": true
+      "automerge": true,
+      "automergeType": "pr"
     },
     {
       "matchDatasources": ["git-submodules"],
-      "automerge": true
+      "matchDepNames": ["cashu-ts"],
+      "groupName": "cashu-ts-update",
+      "postUpgradeTasks": {
+        "commands": ["npm install --package-lock-only @cashu/cashu-ts"],
+        "fileFilters": ["package-lock.json"]
+      },
+      "automerge": true,
+      "automergeType": "pr"
     }
   ],
   "timezone": "UTC",
