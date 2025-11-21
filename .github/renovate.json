@@ -16,7 +16,7 @@
       "automerge": true
     },
     {
-      "matchDepTypes": ["git-submodules"],
+      "matchDatasources": ["git-submodules"],
       "automerge": true
     }
   ],
