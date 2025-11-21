@@ -1,0 +1,21 @@
+{
+  "extends": ["config:recommended"],
+  "enabledManagers": ["git-submodules"],
+  "git-submodules": {
+    "enabled": true,
+    "managerFilePatterns": [".gitmodules"]
+  },
+  "schedule": ["at any time"],
+  "packageRules": [
+    {
+      "matchDatasources": ["git-submodules"],
+      "matchDepNames": ["cashu-ts"],
+      "groupName": "cashu-ts-update",
+      "automerge": true,
+      "recreateWhen": "always",
+      "automergeType": "pr"
+    }
+  ],
+  "timezone": "UTC",
+  "platformAutomerge": true
+}
