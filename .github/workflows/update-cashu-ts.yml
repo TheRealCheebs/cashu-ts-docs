@@ -56,7 +56,12 @@ jobs:
             exit 0
           fi
 
-          git commit -m "chore(deps): update cashu-ts submodule to origin/main"
+          # Get the new submodule commit SHA and use it in the commit message
+          NEW_SUBMODULE_SHA=$(git -C cashu-ts rev-parse --short HEAD)
+          echo "New cashu-ts commit: $NEW_SUBMODULE_SHA"
+          echo "submodule_sha=$NEW_SUBMODULE_SHA" >> $GITHUB_OUTPUT
+
+          git commit -m "chore(deps): update cashu-ts to $NEW_SUBMODULE_SHA"
           echo "updated=true" >> $GITHUB_OUTPUT
 
       # The following block previously created a PR and enabled auto-merge.
