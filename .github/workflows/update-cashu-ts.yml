@@ -59,29 +59,42 @@ jobs:
           git commit -m "chore(deps): update cashu-ts submodule to origin/main"
           echo "updated=true" >> $GITHUB_OUTPUT
 
-      - name: Create pull request if updated
-        id: create_pr
-        if: steps.update.outputs.updated == 'true'
-        uses: peter-evans/create-pull-request@v5
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "chore(deps): update cashu-ts submodule to latest"
-          branch: chore/update-cashu-ts
-          title: "chore(deps): update cashu-ts submodule"
-          body: |
-            This PR was created automatically by a workflow to update the `cashu-ts` submodule to the latest state of its default branch.
+      # The following block previously created a PR and enabled auto-merge.
+      # It's kept here commented out so you can re-enable it easily if desired.
+      #
+      # - name: Create pull request if updated
+      #   id: create_pr
+      #   if: steps.update.outputs.updated == 'true'
+      #   uses: peter-evans/create-pull-request@v5
+      #   with:
+      #     token: ${{ secrets.GITHUB_TOKEN }}
+      #     commit-message: "chore(deps): update cashu-ts submodule to latest"
+      #     branch: chore/update-cashu-ts
+      #     title: "chore(deps): update cashu-ts submodule"
+      #     body: |
+      #       This PR was created automatically by a workflow to update the `cashu-ts` submodule to the latest state of its default branch.
+      #
+      #       If you want Renovate-style grouped dependency PRs, consider enabling Renovate and adding a `.github/renovate.json` (example included in this repo).
+      #     labels: |
+      #       automated
+      #       dependencies
+      #
+      # - name: Enable auto-merge for the PR
+      #   if: steps.update.outputs.updated == 'true'
+      #   uses: peter-evans/enable-pull-request-automerge@v2
+      #   with:
+      #     token: ${{ secrets.GITHUB_TOKEN }}
+      #     # Use the pull request number returned by the create-pull-request action
+      #     pull-request-number: ${{ steps.create_pr.outputs.pull-request-number }}
+      #     # merge-method can be merge, squash, or rebase — choose what matches your branch protection
+      #     merge-method: merge
 
-            If you want Renovate-style grouped dependency PRs, consider enabling Renovate and adding a `.github/renovate.json` (example included in this repo).
-          labels: |
-            automated
-            dependencies
-
-      - name: Enable auto-merge for the PR
+      - name: Push update directly to main
         if: steps.update.outputs.updated == 'true'
-        uses: peter-evans/enable-pull-request-automerge@v2
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          # Use the pull request number returned by the create-pull-request action
-          pull-request-number: ${{ steps.create_pr.outputs.pull-request-number }}
-          # merge-method can be merge, squash, or rebase — choose what matches your branch protection
-          merge-method: merge
+        run: |
+          set -euo pipefail
+          echo "Pushing submodule update directly to main"
+          # Ensure we have a remote URL that uses the GITHUB_TOKEN for auth
+          git remote set-url origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
+          # Push current HEAD to main on origin
+          git push origin HEAD:main
