@@ -25,7 +25,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Update cashu-ts submodule to latest origin/main and refresh lockfile
+      - name: Update cashu-ts submodule to latest origin/main
         id: update
         run: |
           set -euo pipefail
@@ -48,32 +48,15 @@ jobs:
           # Checkout origin/main in detached head so submodule pointer moves to that commit
           git -C cashu-ts checkout --detach origin/main
 
-          # Stage submodule change
+          # Stage submodule change and check for diff
           git add cashu-ts
-
-          # Setup node so we can update the package-lock for the local file dependency
-          echo "Setting up Node.js"
-          curl -sL https://deb.nodesource.com/setup_18.x | sudo -E bash -
-          sudo apt-get install -y nodejs
-
-          # Update package-lock.json only for the local package to avoid touching other deps
-          # Use package-lock-only against the local path so npm updates the lock for that package
-          if [ -f package-lock.json ]; then
-            echo "Updating package-lock.json for ./cashu-ts"
-            npm install --package-lock-only ./cashu-ts
-            git add package-lock.json
-          else
-            echo "No package-lock.json present; skipping lockfile update"
-          fi
-
-          # If nothing staged beyond the previous HEAD, exit
           if git diff --staged --quiet; then
-            echo "No submodule or lockfile update detected"
+            echo "No submodule update detected"
             echo "updated=false" >> $GITHUB_OUTPUT
             exit 0
           fi
 
-          git commit -m "chore(deps): update cashu-ts submodule to origin/main (and refresh lockfile)"
+          git commit -m "chore(deps): update cashu-ts submodule to origin/main"
           echo "updated=true" >> $GITHUB_OUTPUT
 
       - name: Create pull request if updated
