@@ -17,5 +17,5 @@
     }
   ],
   "timezone": "UTC",
-  "platformAutomerge": true
+  "platformAutomerge": false
 }
